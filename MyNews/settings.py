@@ -11,10 +11,12 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
+sys.path.insert(0,os.path.join(BASE_DIR, 'extra_apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -27,7 +29,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+# 设置邮箱和用户名均可登录 TODO:账号密码正确却登陆不了
+# AUTHENTICATION_BACKENDS = (
+#     'users.views.CustomBackend',
+# )
+# 因自己重新封装user为UserProfile故在 settings中 添加自己的
+AUTH_USER_MODEL = "users.UserProfile"
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,6 +44,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'xadmin',
+    'crispy_forms',
+    'pure_pagination',
+    'captcha',
+    'DjangoUeditor',
+    'users',
+    'news',
 ]
 
 MIDDLEWARE = [
@@ -77,7 +91,7 @@ WSGI_APPLICATION = 'MyNews.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'flashnews',
+        'NAME': 'my_news',
         'USER': 'root',
         'PASSWORD': '123456',
         'HOST':'127.0.0.1'
@@ -123,3 +137,17 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
+STATIC_ROOT = '/static/'
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# 部署
+# STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
